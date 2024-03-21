@@ -29,8 +29,7 @@ let claimList: Claims = {
 // Service methods
 
 
-export const findAll = async (): Promise<Claim[]> => Object.values(claimList);
-
+export const findAll = async (): Promise<Claim[]> => 	Object.values(claimList);
 export const find = async (id: number): Promise<Claim> => claimList[id];
 
 export const create = async(newClaim: Claim): Promise<Claim> => {
@@ -46,5 +45,11 @@ export const create = async(newClaim: Claim): Promise<Claim> => {
 		return claimList[id];
 }
 
+export const remove = async (id: number): Promise<null | void> => {
+							
+				const claim = await find(id);
 
+
+							delete claimList[id];
+}
 
