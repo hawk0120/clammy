@@ -42,7 +42,29 @@ claimsRouter.get("/api/claims/", async (req: Request, res: Response) => {
 		}
 });
 
+/* Update
+ * Put /api/claims/update/:id
+ */	
+claimsRouter.put("/api/claims/update/:id", async (req: Request, res: Response) => {
 
+				try{
+							const id = parseInt(req.params.id, 10);
+				      const claimUpdate: Claim = req.body;
+							
+							const claim: Claim = await claimService.find(id);
+				      if(claim) {
+
+							const updatedClaim = claimService.update(id, claimUpdate);
+				      return res.status(200).json(updatedClaim);
+								}
+
+								const newClaim = await claimService.create(claimUpdate);
+								res.status(201).json(newClaim);
+
+				} catch(e){
+								res.status(500).send(e.message);
+				}
+});
 
 //******************* GET /:id
 claimsRouter.get("/api/claims/:id", async (req: Request, res: Response) => {
@@ -65,7 +87,7 @@ claimsRouter.get("/api/claims/:id", async (req: Request, res: Response) => {
 
 // Create
 //POST /api/claim
-claimsRouter.post("/api/claims/create", async (req: Request, res: Response) => {
+claimsRouter.post("/api/claims/create/:id", async (req: Request, res: Response) => {
 
 		try{
 

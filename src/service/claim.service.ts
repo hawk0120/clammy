@@ -53,3 +53,19 @@ export const remove = async (id: number): Promise<null | void> => {
 							delete claimList[id];
 }
 
+export const update = async(id: number, claimUpdate: Claim): Promise<Claim | null> => {
+			
+      const claim = await find(id);
+
+			if(!claim) {
+				return null;
+			}
+
+			claimList[id] = { ...claimUpdate };
+			
+
+			return claimList[id];
+				
+
+
+}
