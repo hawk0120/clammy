@@ -1,57 +1,57 @@
 //Data Model Interfaces
-import {Claim} from "../model/claim.interface";
-import {Claims} from "../model/claims.interface";
-import { ClaimsRepository} from '../repository/claim.repository.ts';
+import { Claim } from '../model/claim.interface';
+import { Claims } from '../model/claims.interface';
+import ClaimRepository from '../repository/claim.repository';
 
 let claimList: Claims = {};
-let claimsRepo = new ClaimsRepository();
-
+let claimsRepo = new ClaimRepository();
 
 // Service methods
 
-
 export const findAll = async (): Promise<Claim[]> => Object.values(claimList);
-export const find = async (id: number): Promise<Claim> => {
-				claimList[id] = claimsRepo.find(id); 
 
+export const find = async (id: number): Promise<Claim | null> => {
+	const claim = claimsRepo.find(id);
+
+	if (!claim) {
+		return null;
+	}
+	claimList.filter( e => id === claim.id);
+	return claimList[id];
 };
 
 export const create = async (newClaim: Claim): Promise<Claim> => {
-
 	const id = new Date().valueOf();
-				
+
 	claimsRepo.createClaim(newClaim);
-	
+
 	claimList[id] = {
-		...newClaim
-	}
+		...newClaim,
+	};
 
 	return claimList[id];
-}
+};
 
 export const remove = async (id: number): Promise<null | void> => {
-
-  claimsRepo.deletClaim(find(id));
+	claimsRepo.deleteClaim(id);
 
 	delete claimList[id];
-}
+};
 
-export const update = async (id: number, claimUpdate: Claim): Promise<Claim | null> => {
-
+export const update = async (
+	id: number,
+	claimUpdate: Claim
+): Promise<Claim | null> => {
 	const claim = await find(id);
 
 	if (!claim) {
 		return null;
 	}
-  claimsRepo.updateClaim(id, claimUpdate);
+	claimsRepo.updateClaim(id, claimUpdate);
 
 	claimList[id] = {
-					...claimUpdate
+		...claimUpdate,
 	};
 
-
 	return claimList[id];
-
-
-
-}
+};

@@ -30,7 +30,6 @@ CREATE TABLE documents {
 				documentId BIGINT NOT NULL PRIMARY KEY,
 				claimNumber VARCHAR(10) REFERENCES claim(claimNumber),
 				title VARCHAR(100),
-				description VARCHAR(100),
 				filePath VARCHAR(100) NOT NULL,
 }
 
