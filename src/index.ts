@@ -1,15 +1,15 @@
 // Imports
-import * as dotenv from 'dotenv'
-import express from 'express'
-import cors from 'cors'
-import helmet from 'helmet'
-import { claimsRouter } from './controller/claim.router'
+import * as dotenv from "dotenv";
+import express, { json } from "express";
+import cors from "cors";
+import helmet from "helmet";
+import { claimsRouter } from "./controller/claim.router";
 
 dotenv.config();
 
 // App Variables
-if(!process.env.PORT) {
-		process.exit(1);
+if (!process.env.PORT) {
+	process.exit(1);
 }
 
 const PORT: number = parseInt(process.env.PORT as string, 10);
@@ -23,13 +23,8 @@ app.use(cors());
 app.use(express.json());
 // Server Activation
 
-app.use('/', claimsRouter);
-
-
-
+app.use("/", claimsRouter);
 
 app.listen(PORT, () => {
-
-		console.log(`Listening on port ${PORT}`);
+	console.log(`Listening on port ${PORT}`);
 });
-

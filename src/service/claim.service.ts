@@ -1,71 +1,57 @@
-
 //Data Model Interfaces
-import { Claim } from "../model/claim.interface";
-import { Claims } from "../model/claims.interface";
+import { Claim } from '../model/claim.interface';
+import { Claims } from '../model/claims.interface';
+import ClaimRepository from '../repository/claim.repository';
 
-// In-Memory Store
-//***************Replace with Repository**********************/
-let claimList: Claims = {
+let claimList: Claims = {};
+let claimsRepo = new ClaimRepository();
 
-		1: {
-		
-			
-			id: 1,
-			description: "This is the first test",
-			policyType: "This is the first test",
-			isResolved: false
-
-		},
-		2: {
-	
-			id: 2,
-			description: "This is the second test",
-			policyType: "This is the second test",
-			isResolved: false
-
-	}
-
-}
 // Service methods
 
+export const findAll = async (): Promise<Claim[]> => Object.values(claimList);
 
-export const findAll = async (): Promise<Claim[]> => 	Object.values(claimList);
-export const find = async (id: number): Promise<Claim> => claimList[id];
+export const find = async (id: number): Promise<Claim | null> => {
+	const claim = claimsRepo.find(id);
 
-export const create = async(newClaim: Claim): Promise<Claim> => {
+	if (!claim) {
+		return null;
+	}
+	claimList.filter( e => id === claim.id);
+	return claimList[id];
+};
 
-		const id = new Date().valueOf();
+export const create = async (newClaim: Claim): Promise<Claim> => {
+	const id = new Date().valueOf();
 
+	claimsRepo.createClaim(newClaim);
 
+	claimList[id] = {
+		...newClaim,
+	};
 
-		claimList[id] = {
-				...newClaim
-		}
-
-		return claimList[id];
-}
+	return claimList[id];
+};
 
 export const remove = async (id: number): Promise<null | void> => {
-							
-				const claim = await find(id);
+	claimsRepo.deleteClaim(id);
 
+	delete claimList[id];
+};
 
-							delete claimList[id];
-}
+export const update = async (
+	id: number,
+	claimUpdate: Claim
+): Promise<Claim | null> => {
+	const claim = await find(id);
 
-export const update = async(id: number, claimUpdate: Claim): Promise<Claim | null> => {
-			
-      const claim = await find(id);
+	if (!claim) {
+		return null;
+	}
+	claimsRepo.updateClaim(id, claimUpdate);
 
-			if(!claim) {
-				return null;
-			}
+	claimList[id] = {
+		...claimUpdate,
+	};
 
-			claimList[id] = { ...claimUpdate };
-			
-
-			return claimList[id];
-				
-
-
-}
+	return claimList[id];
+};
