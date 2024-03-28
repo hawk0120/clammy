@@ -1,0 +1,14 @@
+<div class="main-container">
+  <h2>Claims Dashboard</h2>
+  <ul class="claims-list">
+    <li *ngFor="let claim of claims">
+      <div>
+        <strong>Title:</strong> {{ claim.title }}
+      </div>
+      <div>
+        <strong>Description:</strong> {{ claim.description }}
+      </div>
+    </li>
+  </ul>
+</div>
+
