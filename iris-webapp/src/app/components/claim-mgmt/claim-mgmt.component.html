@@ -1,0 +1,30 @@
+<!-- claim-management.component.html -->
+<div>
+  <h2>Create New Claim</h2>
+  <form [formGroup]="claimForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label for="title">Title</label>
+      <input type="text" id="title" formControlName="title" />
+    </div>
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+    <button type="submit" [disabled]="claimForm.invalid">Submit</button>
+  </form>
+
+  <h3>{{ message }}</h3>
+
+  <h2>Claims</h2>
+  <div *ngIf="claims.length > 0; else noClaims">
+    <div *ngFor="let claim of claims">
+      <h4>{{ claim.title }}</h4>
+      <p>{{ claim.description }}</p>
+      <button (click)="onDelete(claim.id)">Delete</button>
+    </div>
+  </div>
+  <ng-template #noClaims>
+    <p>No claims available</p>
+  </ng-template>
+</div>
+
